@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="UserServiceTests" time="0.097" tests="16" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="HabitServiceTests" time="0.04" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -55,26 +55,12 @@
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testRegisterNewUser_success_twoUser" classname="UserServiceTests" time="0.052"/>
-  <testcase name="testUserChangePassword" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testAdminDeleteUser" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testRegisterNewUser_failure_duplicateName" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testRegisterNewUser_failureEmail" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testLoginUserSuccessful" classname="UserServiceTests" time="0.001">
-    <system-out><![CDATA[Successfully Authenticated
-]]></system-out>
-  </testcase>
-  <testcase name="testUserChangeEmail" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testLoginUserFailed_incorrectEmail" classname="UserServiceTests" time="0.001">
-    <system-out><![CDATA[Authentication Failed
-]]></system-out>
-  </testcase>
-  <testcase name="testEmailVerification_invalid" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testRegisterNewUser_failureName" classname="UserServiceTests" time="0.0"/>
-  <testcase name="testAdminGetCertainUser" classname="UserServiceTests" time="0.012"/>
-  <testcase name="testRegisterNewUser_success" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testDeleteUser" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testForgetPassword" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testUserChangeName" classname="UserServiceTests" time="0.001"/>
-  <testcase name="testEmailVerification_valid" classname="UserServiceTests" time="0.0"/>
+  <testcase name="testUpdateHabitDescription" classname="HabitServiceTests" time="0.03"/>
+  <testcase name="testDeleteHabit_one" classname="HabitServiceTests" time="0.001"/>
+  <testcase name="testDeleteHabit_several" classname="HabitServiceTests" time="0.001"/>
+  <testcase name="testUpdateHabitName" classname="HabitServiceTests" time="0.001"/>
+  <testcase name="testUpdateHabitInterval" classname="HabitServiceTests" time="0.003"/>
+  <testcase name="testDeleteAll" classname="HabitServiceTests" time="0.0"/>
+  <testcase name="testCreateHabit_several" classname="HabitServiceTests" time="0.0"/>
+  <testcase name="testCreateHabit_one" classname="HabitServiceTests" time="0.001"/>
 </testsuite>

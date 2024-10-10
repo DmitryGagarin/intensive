@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: UserServiceTests
+Test set: HabitServiceTests
 -------------------------------------------------------------------------------
-Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.097 s -- in UserServiceTests
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in HabitServiceTests

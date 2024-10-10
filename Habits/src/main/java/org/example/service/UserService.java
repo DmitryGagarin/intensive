@@ -4,14 +4,17 @@ import org.example.model.UserModel;
 import org.example.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// TODO: work on boiler-plate code, get rid of similar pieces
 public class UserService implements UserRepository {
 
     public ArrayList<UserModel> userModels = new ArrayList<>();
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
 
     @Override
     public void createAdmin() {
@@ -20,94 +23,102 @@ public class UserService implements UserRepository {
 
     @Override
     public String registerNewUser(String name, String email, String password) {
-        if (userExists(name, email)) {
-            return "User can't be registered, this name or email already exists";
+        for (var user : userModels) {
+            if (user.getName().equals(name)) {
+                return "User can't be registered, this name already exists";
+            }
+            else if (user.getEmail().equals(email)) {
+                return "User can't be registered, this email already exists";
+            }
         }
-        userModels.add(new UserModel(name, email, password));
+        UserModel userModel = new UserModel(name, email, password);
+        userModels.add(userModel);
         return "User successfully registered";
-    }
-
-    private boolean userExists(String name, String email) {
-        return userModels.stream()
-                .anyMatch(user -> user.getName().equals(name) || user.getEmail().equals(email));
     }
 
     @Override
     public boolean loginUser(String email, String password) {
-        return userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .map(user -> {
-                    if (user.getPassword().equals(password)) {
-                        System.out.println("Successfully Authenticated");
-                        return true;
-                    } else {
-                        System.out.println("Authentication Failed");
-                        return false;
-                    }
-                })
-                .orElseGet(() -> {
-                    System.out.println("Authentication Failed");
-                    return false;
-                });
+        UserModel userModel = new UserModel(email, password);
+        for (var userIterate : userModels) {
+            if (userModel.getEmail().equals(userIterate.getEmail())) {
+                if (userModel.getPassword().equals(userIterate.getPassword())) {
+                    System.out.println("Successfully Authenticated");
+                    return true;
+                }
+            }
+        }
+        System.out.println("Authentication Failed");
+        return false;
     }
 
     @Override
     public void userChangeName(String email, String newName) {
-        updateUser(email, user -> user.setName(newName));
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                userIterate.setName(newName);
+            }
+        }
     }
 
     @Override
     public void userChangeEmail(String email, String newEmail) {
-        updateUser(email, user -> user.setEmail(newEmail));
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                userIterate.setEmail(newEmail);
+            }
+        }
     }
 
     @Override
     public void userChangePassword(String email, String oldPassword, String newPassword) {
-        updateUser(email, user -> {
-            if (user.getPassword().equals(oldPassword)) {
-                user.setPassword(newPassword);
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                if (userIterate.getPassword().equals(oldPassword)) {
+                    userIterate.setPassword(newPassword);
+                }
             }
-        });
-    }
-
-    private void updateUser(String email, java.util.function.Consumer<UserModel> updater) {
-        userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(updater);
+        }
     }
 
     @Override
     public void deleteUser(String email, String password) {
-        userModels.removeIf(user -> user.getEmail().equals(email) && user.getPassword().equals(password));
+        Iterator<UserModel> iterator = userModels.iterator();
+        while (iterator.hasNext()) {
+            UserModel userIterate = iterator.next();
+            if (userIterate.getEmail().equals(email) && userIterate.getPassword().equals(password)) {
+                iterator.remove(); // Use iterator to safely remove the item
+            }
+        }
     }
 
     @Override
     public void userAddHabit(String email, String habitName, String habitDescription, int interval) {
-        userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(user -> {
-                    HabitService habitService = new HabitService();
-                    user.getUsersHabitModels().add(habitService.createHabit(habitName, habitDescription, interval)); // Use getter
-                });
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                HabitService habit = new HabitService();
+                userIterate.setUsersHabitModels(habit.createHabit(habitName, habitDescription, interval));
+            }
+        }
     }
 
     @Override
     public void userDeleteHabit(String email, String habitName) {
-        userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(user -> user.getUsersHabitModels().removeIf(habit -> habit.getName().equals(habitName))); // Use getter
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                HabitService habit = new HabitService();
+                userIterate.getUsersHabitModels().remove(habitName);
+            }
+        }
     }
 
     @Override
     public UserModel checkUserInformation(String email) {
-        return userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                return userIterate;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -123,19 +134,21 @@ public class UserService implements UserRepository {
 
     @Override
     public void forgetPassword(String email) {
-        userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(user -> sendPasswordToEmail(email));
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                sendPasswordToEmail(email);
+            }
+        }
     }
 
     @Override
     public String sendPasswordToEmail(String email) {
-        return userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .map(UserModel::getPassword)
-                .orElse("Mail not found");
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                return userIterate.getPassword();
+            }
+        }
+        return "Mail not found";
     }
 
     @Override
@@ -145,18 +158,20 @@ public class UserService implements UserRepository {
 
     @Override
     public void adminBanUser(String email) {
-        userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(user -> System.out.println("User " + email + " is blocked"));
+        for (var user : userModels) {
+            if (user.getEmail().equals(email)) {
+                System.out.println("blocked");
+            }
+        }
     }
 
     @Override
     public String adminGetCertainUser(String email) {
-        return userModels.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .map(UserModel::toString)
-                .orElse("User Not Found");
+        for (var userIterate : userModels) {
+            if (userIterate.getEmail().equals(email)) {
+                return userIterate.toString();
+            }
+        }
+        return "User Not Found";
     }
 }

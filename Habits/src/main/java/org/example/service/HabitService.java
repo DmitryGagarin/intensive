@@ -5,16 +5,15 @@ import org.example.repository.HabitRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class HabitService implements HabitRepository {
-    private final List<HabitModel> habits = new ArrayList<>();
+    public List<HabitModel> habits = new ArrayList<>();
 
     @Override
-    public HabitModel createHabit(String name, String description, int interval) {
+    public ArrayList<HabitModel> createHabit(String name, String description, int interval) {
         HabitModel habit = new HabitModel(name, description, interval, new ArrayList<>());
         habits.add(habit);
-        return habit;
+        return (ArrayList<HabitModel>) habits;
     }
 
     @Override

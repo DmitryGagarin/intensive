@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import org.example.model.UserModel;
 import org.example.out.ConsoleMenus;
 import org.example.Main;
 import org.example.repository.WorkFlowUtilsRepository;
@@ -95,7 +96,9 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
                     fetchUserMenu(reader);
                     break;
                 case 5:
-                    System.exit(0);
+                    fetchUserMenu(reader);
+                default:
+                    System.out.println("Invalid choice, please try again.");
             }
         }
     }
@@ -106,8 +109,10 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
             ConsoleMenus.userHabitsMenu();
             UserService tempUser = new UserService();
             int choice = Integer.parseInt(reader.readLine());
+            UserModel user = new UserModel();
             switch (choice) {
                 case 1:
+                    System.out.println(user.getUsersHabitModels());
                     System.out.println("Insert Habit Name");
                     String habitName = reader.readLine();
                     System.out.println("Insert Habit Description");
@@ -117,14 +122,19 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
                     tempUser.userAddHabit(Main.currentAuthenticatedUserModel.getEmail(), habitName, habitDescription, interval);
                     break;
                 case 2:
+                    System.out.println(user.getUsersHabitModels());
                     System.out.println("Insert Name Of Habit To Delete");
                     String habitToDelete = reader.readLine();
                     tempUser.userDeleteHabit(Main.currentAuthenticatedUserModel.getEmail(), habitToDelete);
                     break;
                 case 3:
                     fetchHabitInformationUpdateMenu(reader);
+                    break;
                 case 4:
                     fetchUserMenu(reader);
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
             }
         }
     }
@@ -164,6 +174,8 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
                 case 4:
                     fetchUserMenu(reader);
                     break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
             }
         }
     }
@@ -176,7 +188,7 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
             UserService user = new UserService();
             switch (choice) {
                 case 1:
-                    System.out.println(UserService.userModels);
+                    System.out.println(user.userModels);
                     break;
                 case 2:
                     System.out.println("Insert email of user");
@@ -193,6 +205,8 @@ public class WorkFlowUtils implements WorkFlowUtilsRepository {
                 case 5:
                     System.out.println("Exiting...");
                     break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
             }
         }
     }
